@@ -5,7 +5,7 @@ const encrypt = {
     return bcrypt.hashSync(pwd, bcrypt.genSaltSync(14));
   },
   comparePassword(encryptedPwd, pwd) {
-    return bcrypt.compareSync(pwd, encryptedPwd);
+    return bcrypt.compareSync(encryptedPwd, pwd);
   },
 };
 

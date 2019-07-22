@@ -38,4 +38,24 @@ router.post('/register', async (req, res) => {
   }
 });
 
+router.post('/login', async (req, res) => {
+  let { email, password } = req.body;
+  try {
+    const user = await Users.findByEmail(email);
+    if (user && encrypt.comparePassword(password, user.password)) {
+      return res.status(200).json({
+        message: `Welcome  to your homepage ${user.email}`,
+        user,
+      });
+    }
+    return res.status(400).json({
+      errorMessage: 'The user with that email does not exist',
+    })
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: error,
+    });
+  }
+});
+
 module.exports = router;

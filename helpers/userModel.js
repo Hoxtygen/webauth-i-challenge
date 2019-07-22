@@ -9,14 +9,10 @@ async function findById(id) {
 async function addUser(userData) {
   return db('users')
     .insert(userData);
-    /* .then((ids) => {
-      const [id] = ids;
-      return findById(id);
-    }); */
 }
 
-async function findByEmail(user) {
-  return db('users').where(user);
+async function findByEmail(email) {
+  return db('users').where({ email }).first();
 }
 
 async function find() {
