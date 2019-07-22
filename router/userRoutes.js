@@ -43,6 +43,7 @@ router.post('/login', async (req, res) => {
   try {
     const user = await Users.findByEmail(email);
     if (user && encrypt.comparePassword(password, user.password)) {
+      req.session.user = user;
       return res.status(200).json({
         message: `Welcome  to your homepage ${user.email}`,
         user,
@@ -63,7 +64,6 @@ function restricted(req, res, next) {
   if (email && password) {
     Users.findByEmail(email)
       .then((user) => {
-        console.log(user)
         if (user && encrypt.comparePassword(password, user.password)) {
           next();
         } else {
