@@ -8,11 +8,11 @@ async function findById(id) {
 
 async function addUser(userData) {
   return db('users')
-    .insert(userData, 'id')
-    .then((ids) => {
+    .insert(userData);
+    /* .then((ids) => {
       const [id] = ids;
       return findById(id);
-    });
+    }); */
 }
 
 async function findByEmail(user) {
