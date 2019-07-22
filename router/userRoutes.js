@@ -4,7 +4,7 @@ const encrypt = require('../hash/obscure.js');
 
 const router = express.Router();
 
-router.get('/users', async (req, res) => {
+router.get('/users', restricted, async (req, res) => {
   try {
     const allUsers = await Users.find();
     return res.status(200).json(allUsers);
@@ -57,5 +57,26 @@ router.post('/login', async (req, res) => {
     });
   }
 });
+
+function restricted(req, res, next) {
+  const { email, password } = req.headers;
+  if (email && password) {
+    Users.findByEmail(email)
+      .then((user) => {
+        console.log(user)
+        if (user && encrypt.comparePassword(password, user.password)) {
+          next();
+        } else {
+          res.status(401).json({ message: 'Invalid Credentials' });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ message: 'Unexpected error' });
+      });
+  } else {
+    res.status(400).json({ message: 'No credentials provided' });
+  }
+}
+
 
 module.exports = router;
