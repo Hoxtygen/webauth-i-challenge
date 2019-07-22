@@ -19,10 +19,20 @@ async function find() {
   return db('users').select();
 }
 
+async function restricted(req, res, next) {
+  if (req.session && req.session.user) {
+    next()
+  } else {
+    res.status(401).json({
+      errorMessage: 'Uh!, you are joking right?',
+    });
+  }
+}
 
 module.exports = {
   addUser,
   findByEmail,
   findById,
   find,
+  restricted,
 };
