@@ -12,7 +12,7 @@ const sessionConfig = {
   name: 'montypython',
   secret: process.env.SESSION_SECRET,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 1 * 24 * 60 * 60 * 1000,
     secure: false,
     httpOnly: true,
   },
